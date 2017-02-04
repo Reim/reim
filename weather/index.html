@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>天气</title>
+    <link rel="stylesheet" href="css/css.css">
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/hmac-sha1.js"></script>
+    <script type="text/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+<div class="bgShaddow" id="bg">
+  <div class="back">
+    <p><a href="../index.html">back</a></p>
+  </div>
+    <div class="wrap">
+        <canvas id = "canvas" width ="500" height ="500">您的浏览器不支持</canvas>
+        <div id="content">
+            <p class="w_title">天气预报</p>
+            <h3 class="date"></h3>
+            <p class="city"></p>
+            <!--<p class="weather"></p>-->
+            <ul id="weatherTab" v-for="list in weathers">
+                <li>
+                    <p>{{list.date}}</p>
+                    <p>{{list.weather}}</p>
+                    <p>{{list.wind}}</p>
+                    <p>{{list.temperature}}</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+    /******** 本示例仅做开发参考使用，不建议在生产环节下暴露 key！ ********/
+
+    var url = "http://api.jirengu.com/weather.php?callback=getWeather";
+    var newScript = document.createElement('script');
+     newScript.type = 'text/javascript';
+     newScript.src = url;
+     $('body').append(newScript);
+     function getWeather(data){
+         console.log(data);
+         $(".date").text(data.date);
+         $(".city").text("当前所在城市:"+data.results[0].currentCity);
+         $(".weather").text(data.results[0].weather_data[0].date);
+
+        new Vue({
+           el:"#content",
+            data:{
+               weathers:data.results[0].weather_data,
+            },
+            methods:{
+
+            }
+        });
+    }
+//http://api.douban.com/v2/movie/in_theaters   豆瓣
+        // 获取当前时间戳
+//    var ts = Math.floor((new Date()).getTime() / 1000);
+//    // 构造验证参数字符串
+//    var str = "ts="+ts+"&uid=" + UID;
+//    // 使用 HMAC-SHA1 方式，以 API 密钥（key）对上一步生成的参数字符串（raw）进行加密
+//    // 并将加密结果用 base64 编码，并做一个 urlencode，得到签名 sig
+//    var sig = CryptoJS.HmacSHA1(str, KEY).toString(CryptoJS.enc.Base64);
+//    sig = encodeURIComponent(sig);
+//    str = str + "&sig=" + sig;
+//    var jsonpCallback = function(data) {
+//        var obj = document.getElementById('content');
+//        var weather = data.results[0];
+//        var text = [];
+//        text.push("Location: " + weather.location.path);
+//        text.push("Weather: " + weather.now.text);
+//        text.push("Temperature: " + weather.now.temperature);
+//        obj.innerText = text.join("\n");
+//    }
+//    // 构造最终请求的 url
+//    var url = API + "?location=" + LOCATION + "&" + str + "&callback=jsonpCallback";
+//    // 向 HTML 中动态插入 script 标签，通过 JSONP 的方式进行调用
+//    var newScript = document.createElement('script');
+//    newScript.type = 'text/javascript';
+//    newScript.src = url;
+//    $('body').append(newScript);
+
+
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+    canvas.width = document.documentElement.clientWidth;
+    canvas.height = document.documentElement.clientHeight;
+    function rand(min,max) {
+        return Math.floor(Math.random()*(max-min+1)+min);
+    }
+    function Ball() {
+        this.r = rand(1,3);
+        this.x = rand(this.r,canvas.width-this.r);
+        this.y = rand(this.r,canvas.height-this.r);
+        this.speedX = rand(1,3)*(rand(1,2)>1?1:-1);
+        this.speedY = rand(1,3)*(rand(1,2)>1?1:-1);
+//        this.color = "rgba("+rand(0,255)+","+rand(0,255)+","+rand(0,255)+","+Math.random().toFixed(2)+")";
+        this.color = "rgba(255,255,255,0.9)";
+
+    }
+    Ball.prototype.draw = function () {
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.arc(this.x,this.y,this.r,0,Math.PI*2,false);
+        ctx.fill();
+    };
+    Ball.prototype.move = function () {
+        this.x+=this.speedX;
+        this.y+=this.speedY;
+        if(this.x>=canvas.width-this.r){
+            this.speedX *= -1;
+        }else if(this.x<=this.r){
+            this.speedX *= -1;
+        }
+        if(this.y>=canvas.height-this.r){
+            this.speedY *= -1;
+        }else if(this.y<=this.r){
+            this.speedY *= -1;
+        }
+
+    };
+    //装小球的数组
+    var balls = [];
+    for(var i = 0;i<100;i++){
+        var ball = new Ball();
+        balls.push(ball);
+        ball.draw();
+    }
+    function boom() {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(var i = 0;i<balls.length;i++){
+            balls[i].draw();
+            balls[i].move();
+        }
+        window.requestAnimationFrame(boom);
+    }
+    boom();
+
+</script>
+</body>
+</html>

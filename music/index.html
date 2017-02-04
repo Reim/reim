@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>Title</title>
+</head>
+
+<body>
+<div class="content"></div>
+<!--<audio src="" autoplay controls="controls"></audio>-->
+<div class="artist"></div>
+<img src="" alt="" id="pic">
+<p>下载地址：</p>
+<div class="download"></div>
+<p class="irc"></p>
+<script src="../js/jquery.js"></script>
+<script type="text/javascript">
+   var url ="http://api.jirengu.com/fm/getSong.php?channel="+rand(0,4)+"&callback=getSong";
+
+   var newScript = document.createElement("script");
+   newScript.type = 'text/javascript';
+   newScript.src = url;
+   $('body').append(newScript);
+   function rand(min,max){
+       return Math.floor(Math.random()*(max-min+1)+min);
+   }
+
+   function getSong(data){
+       console.log(data);
+       $(".content").text(data.song[0].title);
+       $(".artist").text(data.song[0].artist);
+       $(".download").text(data.song[0].url);
+       $("#pic").attr("src",data.song[0].picture);
+       $(".irc").text(data.song[0].lrc);
+//       $("audio").attr("src","data.song[0].url");
+   }
+</script>
+</body>
+</html>

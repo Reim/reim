@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport" />
+    <title>TombStone</title>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="./css/css.css">
+    <link rel="stylesheet" href="./css/animate.css">
+</head>
+<body>
+<div class="all">
+    <div class="container-fluid">
+        <div class="row register">
+            <div class="col-md-10">
+                <ul class="regUl">
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#about">关于</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2">
+                <!--<ul class="login" >-->
+                    <!--<li><button type="button" class="btn btn-default">登录</button></li>-->
+                    <!--<li><button type="button" class="btn btn-success">注册</button></li>-->
+                <!--</ul>-->
+            </div>
+        </div>
+        <div class="row title1" id="returnTop">
+            <h2 class="th1 bounceInDown">创意来源于生活</h2>
+        </div>
+    </div>
+    <div class="content">
+        <div class="content2">
+            <div class="street d2" id="street">
+                <p class="d2title">随便逛逛</p>
+                <ul>
+                    <li><a href="">笔记</a></li>
+                    <li><a href="">新闻</a></li>
+                    <li><a href="weather/index.html">天气</a></li>
+                    <li><a href="">小说</a></li>
+                    <li><a href="">动漫</a></li>
+                    <li><a href="">电影</a></li>
+                    <li><a href="">音乐</a></li>
+                    <li><a href="live/index.html">直播</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="content3">
+            <div class="d3" id="d3">
+                <svg viewBox="0 0 2880 1620" width="100%"  height="100%" preserveAspectRatio="xMaxYMax slice">
+                    <polygon opacity="0.3" points="2000,1620 0,1620 0,0 1200,0 " style="fill: #ccc">
+                    </polygon>
+                </svg>
+                <!--<a href="#returnTop"><img id="kanban22" src="img/下载.png" alt=""></a>-->
+                <p class="about" id="about">关于我</p>
+                <div class="d3-info">
+                    <p>菜鸟一枚</p>
+                    <p>民间段子手</p>
+                    <p>爱动漫爱游戏</p>
+                    <p>喜欢新鲜的事物</p>
+                    <p>刚入门的前端小白</p>
+                    <p>未来的技术经理兼架构师</p>
+                    <p class="d3Feel">
+                       <span class="df1">(～o▔▽▔)～o</span><span class="df2">o～(▔▽▔o～) </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./js/jquery.js"></script>
+<!--<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.7.2/jquery.min.js"></script>-->
+<!--<script src="http://yiyeti.cc/usr/themes/Sgreen/js/snow.js"></script>-->
+<div class="snow-container"></div>
+<script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
+<script type="text/javascript">
+  $(function () {
+      var timer;
+      var currentTop=0;
+      var height = 990;
+      if(window.navigator.userAgent.indexOf("Firefox")!=-1){
+          $(document)[0].addEventListener("DOMMouseScroll",scrollPage,false);
+      }else{
+          $(document)[0].addEventListener("mousewheel",scrollPage,false);
+      }
+      function scrollPage(ev) {
+          var ev = ev || window.event;
+          var down = true;
+          if (ev.wheelDelta) {
+              down = ev.wheelDelta > 0;
+          } else {
+              down = ev.detail < 0;
+          }
+          if(down) {
+              currentTop = $(window).scrollTop() - height;
+          } else {
+              currentTop = $(window).scrollTop() + height;
+          }
+          ev.preventDefault();
+          if(timer){
+              clearTimeout(timer);
+          }
+//        滚一次0.3s
+//        当前页面位置currentTop
+          timer = setTimeout(function(){
+              $('html,body').animate({
+                  scrollTop:currentTop
+              },250);
+              clearTimeout(timer);
+          },250);
+      }
+
+//扩展$对象，添加方法animateCss
+      $.fn.extend({
+          animateCss: function (animationName) {
+              var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+              $(this).addClass('animated ' + animationName).one(animationEnd, function() {
+                  $(this).removeClass('animated ' + animationName);
+              });
+          }
+      });
+
+      $(".title1 h2").addClass("animated bounce");
+
+      $(".df1").animateCss("fadeInLeft infinite ");
+      $(".df2").animateCss("fadeInRight infinite");
+      $(".d2title").on("mousedown",()=>{
+          $(".d2title").animateCss("hinge");
+      });
+
+      $(".d2 ul li").hover(function(){
+          $(this).find("a").css({
+              color:"#66ccff"
+          });
+          $(this).animateCss('rubberBand');
+      },function () {
+          $(this).find("a").css({
+              color:"#ccc"
+          });
+      });
+  });
+</script>
+</body>
+</html>

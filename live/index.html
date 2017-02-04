@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <title>直播</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../css/animate.css">
+    <link rel="stylesheet" href="css/css.css">
+</head>
+<body>
+<div id="app">
+    <div class="navigator">
+        <nav class="navbar navbar-inverse">
+            <a href="../index.html"><span class="nv_back">Back</span></a>
+            <!--<img src="img/live-logo-150-cyan.5955d8c.png" alt="">-->
+        </nav>
+    </div>
+    <div class="content" >
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <p class="newP">直播新秀</p>
+                    <ul class="newLive" v-for="list in live">
+                        <!--<li>{{list.title}}</li>-->
+                        <li>
+                            <a v-bind:href="list.link">
+                                <img class="newImg" v-bind:src="list.pic" alt="tu">
+                                <div class="newInfo">
+                                    <img v-bind:src="list.face" alt="">
+                                    <p>{{list.title}}</p>
+                                    <div class="online">
+                                        <span>观众数：</span>
+                                        <span>{{list.online}}</span>
+                                    </div>
+                                    <div class="nickname">
+                                        <span>{{list.uname}}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4 marq" >
+                    <img id="kanban22" src="img/pic/kanban-gif-22.0dd205a.gif" alt="">
+                    <img id="kanban33" src="img/pic/kanban-gif-33.4f7b69f.gif" alt="">
+                    <marquee  align="middle" onMouseOut="this.start()" onMouseOver="this.stop()" scrollAmount=3  loop=-1 behavior="alternate" deplay="1" ><a href="{{ad[0].url}}"><img  src="img/2017.jpg"  ></a><a href="{{ad[1].url}}"><img  src="img/2016.jpg"></a></marquee>
+                </div>
+                <div class="col-md-4">
+                    <p class="h_title">热门排行</p>
+                    <ul class="hotLive" v-for="h in ranking">
+                        <li>
+                            <a href="{{h.link}}">
+                                <img v-bind:src="h.face" alt="">
+                                <p class="hl_title">{{h.title}}</p>
+                                <p class="hl_namelive">
+                                    <img src="img/user.png" alt="">
+                                    <span>{{h.uname}}</span>
+                                    <span><img src="img/eye.png" alt="">{{h.online}}</span>
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            </div>
+                <div class="row">
+                    <div class="col-md-12" >
+                            <div class="rl_title">
+                                <span>推荐直播</span>
+                                <img id="tv" src="img/pic/progress-tv.e11a9bf.gif" alt="">
+                            </div>
+                           <ul class="recommendLive" v-for="h in recommend">
+                               <li>
+                                   <a href="{{h.link}}">
+                                       <img class="recommendImg" v-bind:src="h.pic" alt="">
+                                        <p class="recommendTitle">{{h.title}}</p>
+                                        <p class="recommendArea">{{h.areaName}}</p>
+                                       <div class="recommendNameonline">
+                                           <span><img src="img/user.png" alt="">{{h.uname}}</span>
+                                           <span><img src="img/eye.png" alt="">{{h.online}}</span>
+                                       </div>
+                                       <span class="recommendInfo">
+                                           <img v-bind:src="h.face" alt="">
+                                       </span> 
+                                   </a>
+                               </li>
+                           </ul>
+                    </div>
+                </div>
+
+        </div>
+</div>
+
+<script src="../js/jquery.js"></script>
+<script src="../js/vue.js"></script>
+<script type="text/javascript">
+    var url = "http://live.bilibili.com/bili/recom?callback=liveXhrDone";
+    var newScript = document.createElement("script");
+    newScript.type = 'text/javascript';
+    newScript.src = url;
+    var newInfo =   document.querySelector(".newInfo");
+    $('body').append(newScript);
+    function liveXhrDone(data){
+//
+        new Vue({
+            el:"#app",
+            data:{
+                        live:data.data.recommendAnchor,
+                        ad:data.data.preview,
+                        ranking:data.data.ranking,
+                        recommend:data.data.recommend
+            },
+            methods:{
+
+            }
+         })
+    };
+
+    $.fn.extend({
+        animateCss: function (animationName) {
+            var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+            $(this).addClass('animated ' + animationName).one(animationEnd, function() {
+                $(this).removeClass('animated ' + animationName);
+            });
+        }
+    });
+    $("#kanban22").animateCss("zoomInUp");
+    $("#kanban33").animateCss("zoomInUp");
+    $(".newInfo").animateCss("slideInUp");
+    $(".recommendInfo").animateCss("slideInLeft");
+
+
+</script>
+</body>
+</html>

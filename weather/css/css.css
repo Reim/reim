@@ -1,0 +1,75 @@
+*{
+    margin:0;
+    padding:0;
+}
+body{
+    font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+
+}
+.bgShaddow{
+    width:100%;
+    position:relative;
+    background:url("../../img/girl.jpg") no-repeat 100% fixed;
+}
+.wrap{
+    width:100%;
+    background-color:rgba(0,0,0,0.5);
+    /*overflow:hidden;*/
+}
+.back p{
+  font-size: 20px;
+  color: #ccc;
+  position: fixed;
+  left: 4%;
+  top: 2%;
+  cursor:pointer;
+}
+.back a{
+  text-decoration: none;
+  color: #ccc
+}
+#canvas{
+    background-color: rgba(4,7,52,0.1);
+}
+#content{
+    width:80%;
+    height:550px;
+    font-size:24px;
+    text-align:center;
+    background-color:rgba(175,175,175,0.5);
+    color:#ccc;
+    position:absolute;
+    left:50%;
+    top:4%;
+    -webkit-transform:translateX(-50%); -moz-transform:translateX(-50%); -ms-transform:translateX(-50%); -o-transform:translateX(-50%); transform:translateX(-50%);
+}
+.w_title{
+    font-size:32px;
+    color:#ccc;
+}
+#content>P{
+    margin:20px;
+}
+#content>h3{
+    margin:40px;
+}
+#content ul{
+    margin-left:40px;
+    margin-top:100px;
+ }
+#content ul li{
+    margin:40px auto;
+    width:20%;
+    list-style:none;
+    float:left;
+    text-align:left;
+}
+@media screen and (max-width: 1200px) {
+    #content ul li{
+        font-size:16px;
+        margin:0 auto;
+    }
+    #content ul{
+        margin-top:0;
+    }
+}
